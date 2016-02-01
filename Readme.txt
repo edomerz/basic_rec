@@ -1,0 +1,11 @@
+recursion:
+
+- fibbunaci
+- strlen
+- strcmp
+- strstr
+- strcpy
+- strcat
+
+- flip to linked list (singal, double)
+- 

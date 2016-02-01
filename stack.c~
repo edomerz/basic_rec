@@ -1,0 +1,87 @@
+/********************************************
+*
+*	Function definition file
+*	
+*	v1.9
+*	elran sarusi 036576726
+*
+*********************************************/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include"stack.h"
+
+struct stack_adt
+{	
+	void *top;
+	void *end;
+	size_t element_size;
+	char head[1];
+};
+
+/****************FUNCTION DEFINITIONS***************/
+
+/* creates a stack with a given capacity*/
+stack_t *StackCreate(size_t element_size, size_t capacity)
+{
+	/*alloc for ptr of new strct*/
+	stack_t *st = (stack_t *)malloc(sizeof(stack_t)+element_size*capacity-1); 
+	if (!( st ))
+	{
+		return NULL;
+	}
+	 
+	st->top = st->head;
+	st->end = st->head+ element_size*capacity;	 
+	st->element_size = element_size ;
+	
+	return (st);
+}
+
+/* destroys a stack*/
+void StackDestroy(stack_t *st)
+{
+	/*frees the struct*/
+	free(st);
+}
+
+
+/*pushes an item on top of the stack*/
+int StackPush(stack_t *st, void *item)
+{
+	if (st->top == st->end)
+	{
+		return(0);
+	}
+	memmove(st->top, item, st->element_size);
+	*(size_t *)&st->top+= st->element_size; 
+	return (1);		/*if reserve failed u get the code from reserve*/
+}
+
+/*pops an item from the stack top*/
+int StackPop(stack_t *st)
+{
+	if ( st->top == (void *)st->head)
+	{
+		return (0);
+	}
+	*(char *)&st->top-= st->element_size;
+	return (1);
+}
+
+
+/* gives the item at the top of the stack*/
+void *StackPeek(const stack_t *st)
+{ 
+	return ((size_t *)((size_t*)st->top - st->element_size));
+}
+
+
+/* gives the current size of the stack*/
+size_t StackSize(const stack_t *st)
+{
+	return (size_t)(((size_t*)st->top - st->head)/st->element_size);
+}
+
+
+/******END*********FUNCTION DEFINITIONS**********/
